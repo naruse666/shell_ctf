@@ -15,9 +15,10 @@ jobs:
       - name: Trim branch
         env:
           BRANCH: ${{ github.event.pull_request.head.ref }}
+        working-directory: beginer/1
         run: |
           user=${BRANCH::-2}
-          cd beginer/1 && ./$user/answer.sh
+          ./$user/answer.sh
 
           # evaluate
           if grep -q "Referer" referer_rfc.txt; then
