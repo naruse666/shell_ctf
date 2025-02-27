@@ -1,0 +1,38 @@
+name: Evaluate 1
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    branches:
+      - main
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Trim branch
+        env:
+          BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          user=${BRANCH::-2}
+          cd beginer/1 && ./$user/answer.sh
+
+          # evaluate file hash
+          sha=$(sha256sum referer_rfc.txt |awk '{print $1}')
+          if [ $sha != ${{ .secrets.ANSWER1 }} ]; then
+            exit 1
+          fi
+
+      - name: Comment on PR
+        if: ${{ failure() }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: "Your answer is incorrect😢"
+            });
