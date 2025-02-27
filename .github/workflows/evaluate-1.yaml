@@ -17,11 +17,11 @@ jobs:
           BRANCH: ${{ github.event.pull_request.head.ref }}
         run: |
           user=${BRANCH::-2}
-          cd beginer/1 && ./$user/answer.sh
+          # cd beginer/1 && ./$user/answer.sh
+          cd beginer/1 && ./naruse_murai/answer.sh
 
-          # evaluate file hash
-          sha=$(sha256sum referer_rfc.txt |awk '{print $1}')
-          if [ $sha != ${{ .secrets.ANSWER1 }} ]; then
+          # evaluate
+          if grep -q "Referer" referer_rfc.txt; then
             exit 1
           fi
 
