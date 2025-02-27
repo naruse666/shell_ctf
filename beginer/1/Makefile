@@ -7,4 +7,4 @@ init:
 	@cd $(user) && touch answer.sh && chmod 700 answer.sh && cp ../referer_rfc.txt .
 
 answer:
-	if [ $(BRANCH_NAME) == "main" ]; then git checkout -b $(user)-$(num) && $$(git add $(user)/* && git commit -m "$(user): answer $(num)" && git push origin $(user)-$(num)); else $$(git add $(user)/* && git commit -m "$(user): answer $(num)" && git push origin $(user)-$(num)); fi
+	if [ $(BRANCH_NAME) == "main" ]; then git checkout -b $(user)-$(num) && $$(git add $(user)/* && git commit -m "$(user): answer $(num)" && git push origin $(user)-$(num)) 2&> /dev/null ; else $$(git add $(user)/* && git commit -m "$(user): answer $(num)" && git push origin $(user)-$(num)) 2&> /dev/null ; fi
